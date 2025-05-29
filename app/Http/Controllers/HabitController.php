@@ -102,6 +102,18 @@ class HabitController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $habit = Habit::find($id);
+
+        if (!$habit) {
+            return response()->json([
+                'message' => 'Habit not found'
+            ], 404);
+        }
+
+        $habit->delete();
+
+        return response()->json([
+            'message' => 'Habit deleted successfully'
+        ], 200);
     }
 }
