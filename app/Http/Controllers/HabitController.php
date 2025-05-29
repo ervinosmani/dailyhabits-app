@@ -71,7 +71,30 @@ class HabitController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $habit = Habit::find($id);
+
+        if (!$habit) {
+            return response()->json([
+                'message' => 'Habit not found'
+            ], 404);
+        }
+
+        // Validimi i inputit
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'frequency' => 'required|in:daily,weekly,monthly',
+            'start_date' => 'required|date',
+        ]);
+
+        // Perditesimi ne databaze
+        $habit->update($validated);
+
+        // Kthimi i pergjigjes
+        return response()->json([
+            'message' => 'Habit updated successfully',
+            'data' => $habit
+        ], 200);
     }
 
     /**
