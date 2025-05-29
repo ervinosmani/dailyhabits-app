@@ -12,7 +12,11 @@ class HabitController extends Controller
      */
     public function index()
     {
-        //
+        $habits = Habit::all();
+
+        return response()->json([
+            'data' => $habits
+        ]);
     }
 
     /**
@@ -49,7 +53,17 @@ class HabitController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $habit = Habit::find($id);
+
+        if (!$habit) {
+            return response()->json([
+                'message' => 'Habit not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $habit
+        ]);
     }
 
     /**
