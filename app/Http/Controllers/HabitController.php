@@ -10,9 +10,9 @@ class HabitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $habits = Habit::all();
+        $habits = Habit::where('user_id', $request->user()->id)->get();
 
         return response()->json([
             'data' => $habits
@@ -51,11 +51,11 @@ class HabitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         $habit = Habit::find($id);
 
-        if (!$habit) {
+        if (!$habit || $habit->user_id !== $request->user()->id) {
             return response()->json([
                 'message' => 'Habit not found'
             ], 404);
@@ -73,7 +73,7 @@ class HabitController extends Controller
     {
         $habit = Habit::find($id);
 
-        if (!$habit) {
+        if (!$habit || $habit->user_id !== $request->user()->id) {
             return response()->json([
                 'message' => 'Habit not found'
             ], 404);
@@ -100,11 +100,11 @@ class HabitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $habit = Habit::find($id);
 
-        if (!$habit) {
+        if (!$habit || $habit->user_id !== $request->user()->id) {
             return response()->json([
                 'message' => 'Habit not found'
             ], 404);
