@@ -38,7 +38,7 @@ class HabitController extends Controller
             'description' => $validated['description'],
             'frequency' => $validated['frequency'],
             'start_date' => $validated['start_date'],
-            'user_id' => 1, // per testim tani(do zevendesojme me auth me vone)
+            'user_id' => $request->user()->id, // per testim tani(do zevendesojme me auth me vone)
         ]);
 
         // Kthimi i pergjigjes
