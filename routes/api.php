@@ -10,9 +10,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('habits', HabitController::class);
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
     Route::post('/habits/{habit}/complete', [HabitCompletionController::class, 'store']);
     Route::delete('/habits/{habit}/complete', [HabitCompletionController::class, 'destroy']);
+
+    Route::get('habits/{habit}/completions', [HabitCompletionController::class, 'index']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);

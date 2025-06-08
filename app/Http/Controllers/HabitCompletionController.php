@@ -8,6 +8,21 @@ use Illuminate\Http\Request;
 
 class HabitCompletionController extends Controller
 {
+    public function index(Request $request, $habitId)
+    {
+        $habit = Habit::findOrFail($habitId);
+
+        if ($habit->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $completions = $habit->completions()->orderBy('date', 'asc')->get(['date']);
+
+        return response()->json([
+            'data' => $completions
+        ]);
+    }
+
     public function store(Request $request, $habitId)
     {
         $habit = Habit::findOrFail($habitId);
